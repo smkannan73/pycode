@@ -1,0 +1,209 @@
+http://pbpython.com/categorical-encoding.html
+https://datascience.stackexchange.com/questions/14069/mass-convert-categorical-columns-in-pandas-not-one-hot-encoding
+
+
+
+read 
+df = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep = ';')
+df = pd.read_csv("E://diabetestest.csv",sep = ',')
+df = pd.read_table("E://pycode//pycode//salary.dat",delim_whitespace=True)
+--xl
+path = '/Documents/analysis/python/examples/2015sales.xlsx'
+xlsx = pd.ExcelFile(path)
+df = pd.read_excel(xlsx, 'Sheet1')
+
+txt
+df=pd.read_csv(“E:/Test.txt”,sep=’\t’) # Load Data from text file having tab ‘\t’ delimeter print df
+read_fwf -- fixed width
+read_clipboard
+
+
+
+download
+!wget -O drug200.csv https://s3-api.us-geo.objectstorage.softlayer.net/cf-courses-data/CognitiveClass/ML0101ENv3/labs/drug200.csv
+
+split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=3)
+
+
+df.info() 
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 768 entries, 0 to 767
+Data columns (total 10 columns):
+Pregnancies                 768 non-null int64
+BMI                         768 non-null float64
+Age                         768 non-null int64
+tst                         762 non-null object
+dtypes: float64(1), int64(2), object(1)
+memory usage: 60.1+ KB
+
+df.describe()
+count
+mean
+std
+min
+25%
+50%
+75%
+max
+
+
+work on numeric columns
+for i in df.columns:
+    df[i] = df[i].fillna(np.mean(df[i]))
+
+individual columns
+df["Glucose"] = df["Glucose"].fillna(np.mean(df["Glucose"]))	
+
+Number 
+print ("Dataset Lenght Number of rows:: ", len(df))  
+print ("Dataset Shape:: Number of rows , columns  ", df.shape)
+
+
+
+encoding
+pivot with values 
+applying one column directlt into DF
+one column
+df=pd.get_dummies(data=df, columns=['Insulin'],prefix='INS')
+-- it will add the nan columns alos in this columns
+df=pd.get_dummies(data=df, columns=['Insulin'],prefix='INS',dummy_na=True)
+
+normal pivot
+result= df.pivot(index= 'ID', columns='Product', values='Sales') 
+
+
+
+
+
+want to remove the first column in the converted columns
+df=pd.get_dummies(data=df, columns=['Insulin'],prefix='INS',drop_first=True)
+multiple columns
+df=pd.get_dummies(data=df, columns=['Insulin','BloodPressure'],prefix=['INS','BP'])
+
+
+applying one column and adding into DF
+dummy=pd.get_dummies(df["sx"])
+df=pd.concat([df,dummy],axis=1)
+
+------------------------------------------
+manual creating DF
+df1 = ({'A': ['a', 'b', 'a'], 'B': ['c', 'c', 'b'],'C': [1, 2, 3]})
+df1 =pd.DataFrame(df1)
+df1.head()
+
+------------------------------------------
+
+--- looping with columsn and not removing the used columns
+for column in ['Insulin']:
+    dummies = pd.get_dummies(df[column])
+    df[dummies.columns] = dummies
+df.head()
+
+
+Remove the columns from df
+
+df = cust_df.drop('Address', axis=1)
+rename
+df.rename(columns={'Leader': 'Commander'}, inplace=True)
+
+add the columns to df
+
+hrattr_data['Attrition_ind'] = 0
+condition 
+hrattr_data.loc[hrattr_data['Attrition']=='Yes','Attrition_ind'] = 1
+hrattr_data.loc[hrattr_data['Attrition']=='No','Attrition_ind'] = 2
+hrattr_data.head()
+
+
+----------------------------------------------------------------------------------------------
+--headers sample
+headers = ["symboling", "normalized_losses", "make", "fuel_type", "aspiration",
+           "num_doors", "body_style", "drive_wheels", "engine_location",
+           "wheel_base", "length", "width", "height", "curb_weight",
+           "engine_type", "num_cylinders", "engine_size", "fuel_system",
+           "bore", "stroke", "compression_ratio", "horsepower", "peak_rpm",
+           "city_mpg", "highway_mpg", "price"]
+
+# Read in the CSV file and convert "?" to NaN
+df = pd.read_csv("http://mlr.cs.umass.edu/ml/machine-learning-databases/autos/imports-85.data",
+                  header=None, names=headers, na_values="?" )
+-------------------------------------------------------------------------------------------------	
+select all the objects (string columns)
+obj_df = df.select_dtypes(include=['object']).copy()
+obj_df.head()			
+
+obj_df[obj_df.isnull().any(axis=1)]
+-----------------------------------------------------------
+
+obj_df["num_cylinders"].value_counts()
+------------------------------------------
+convert into category type
+
+obj_df["body_style"] = obj_df["body_style"].astype('category')
+obj_df["body_style_cat"] = obj_df["body_style"].cat.codes
+
+
+--------------------------------------------------------------
+duplicates
+df = pd.read_table("E://pycode//pycode//empdups.csv",sep = ',')
+df.duplicated(['empid','ename','age','sal','city','comm'])
+-- it will remove all the duplicates with original
+df.drop_duplicates(keep=False)
+-- it will remove all the duplicates but maintain the first one 
+df.drop_duplicates(keep='first')
+
+df['is_duplicated'] = df.duplicated(['order_id', 'order_item_cd'])
+df['is_duplicated'].sum()
+df_nodup[df_nodup['is_duplicated']].line_item_total.sum()
+df_nodup.to_csv('2015sales_nodup.csv', encoding='utf-8')
+
+
+--------------------------------------------------------------
+
+  np.log(x) is the natural logarithm, i.e. the power to which e would have to be raised to equal x:
+
+df['sal1'] = np.log(df.sal)
+df['pct_change'] = np.log(df.sal) - np.log(df.sal.shift(1)) 
+
+but 2nd statment may return th nan also
+
+
+
+------------------- 
+convert
+srting_outcome = str(numeric_input) #Converts numeric_input to string_outcome
+integer_outcome = int(string_input) #Converts string_input to integer_outcome
+float_outcome = float(string_input) #Converts string_input to integer_outcome
+
+-----
+
+sort
+print df.sort(['Product','Sales'], ascending=[True, False])
+--
+groupby
+
+Group by
+print(df['Glucose'].value_counts())
+test= df.groupby(['Gender','BMI'])
+test.size()
+
+
+---------------------------
+
+df.isnull()
+import numpy as np
+meanAge = np.mean(df.Age)     #Using numpy mean function to calculate the mean value
+df.Age = df.Age.fillna(meanAge) #replacing missing values in the DataFrame
+
+data.isnull().any()
+
+-----------------
+
+concat two df
+all_data = pd.concat((train, test)).reset_index(drop=True)
+
+
+print("Training set has {} samples.".format(X_train.shape[0]))
+print("Testing set has {} samples.".format(X_test.shape[0]))
