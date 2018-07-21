@@ -1,0 +1,45 @@
+easy_install pip
+pip --version
+python -m pip install tensorflow
+python -m pip install Scipy
+python -m pip install keras
+python -m pip install Numpy
+python -m pip install Matplotlib
+python -m pip install Scikit-Learn
+python -m pip install Pandas
+python -m pip install Theano
+python -m pip install NLTK
+python -m pip install Statsmodels	
+python -m pip install PyBrain
+python -m pip install Gensim
+python -m pip install Plotly
+python -m pip install elephas
+python -m pip install Bokeh
+python -m pip install Seaborn
+python -m pip install cx_oracle
+
+
+
+python -m pip install Bassemap
+python -m pip install pyhive
+python -m pip install Pattern
+python -m pip install Bokeh
+python -m pip install pickle
+
+https://www.microsoft.com/en-in/download/confirmation.aspx?id=48145
+python -m pip install Scrapy
+
+
+
+
+
+
+
+pip install keras
+
+
+
+
+python -m pip install tensorflow
+python -m pip uninstall packagename
+python -m pip install --upgrade packagename
